@@ -1,0 +1,27 @@
+########################################################################################################################
+# docker build -f Dockerfile-runner-dev -t runner:dev .
+# docker run -it --privileged=true --name runner_dev runner:dev
+# docker run -id --privileged=true --name runner_dev runner:dev
+# docker exec -it runner_dev /bin/bash 
+# docker stop runner_dev
+# docker rm   runner_dev
+# docker rmi  runner:dev
+########################################################################################################################
+FROM u20:latest
+
+LABEL Author=Steven.Zhou
+LABEL Email=zhy29563@126.com
+LABEL DEV_Detail1="Install build-essential gdb git pkg-config lcov nasm python3 python3-pip"
+LABEL DEV_Detail2="Install autoconf automake libtool"
+LABEL DEV_Detail3="Install cmake meson ninja"
+LABEL DEV_Detail4="Modify pip source to tsinghua"
+
+RUN apt-get -y update                                                                                                &&\
+  echo -e "\n6\n70\n" | apt-get -y install cmake                                                                     &&\
+  apt-get install -y build-essential gdb git autoconf automake libtool pkg-config lcov                               &&\
+  apt-get install -y nasm python3 python3-pip                                                                        &&\
+  pip3 config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple                                          &&\
+  pip3 config set install.trusted-host pypi.tuna.tsinghua.edu.cn                                                     &&\
+  pip3 config set global.disable-pip-version-check true                                                              &&\
+  pip3 install meson ninja                                                                                           &&\
+  apt-get -y autoremove
