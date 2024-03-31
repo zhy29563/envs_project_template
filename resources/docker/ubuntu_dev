@@ -1,0 +1,23 @@
+########################################################################################################################
+# docker build -f ubuntu_dev --build-arg UVER=u20 -t u20:dev ${PWD}
+# docker build -f ubuntu_dev --build-arg UVER=u18 -t u18:dev ${PWD}
+# docker run -it --rm --privileged=true u20:dev
+# docker run -it --rm --privileged=true --user=u20 --workdir=/home/u20 u20:dev
+########################################################################################################################
+ARG  UVER=u20
+FROM ${UVER}:base
+
+LABEL Author=Steven.Zhou
+LABEL Email=zhy29563@126.com
+
+RUN apt-get -y update                                                                &&\
+  echo -e "\n6\n70\n" | apt-get -y install cmake                                     &&\
+  apt-get install -y build-essential gdb git autoconf automake libtool pkg-config    &&\
+  apt-get install -y nasm python3 python3-pip                                        &&\
+  echo '[global]' >/etc/pip.conf                                                     &&\
+  echo 'index-url = https://pypi.tuna.tsinghua.edu.cn/simple' >> /etc/pip.conf       &&\
+  pip3 install -U pip                                                                &&\
+  pip3 config --global set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple &&\
+  pip3 config --global set install.trusted-host pypi.tuna.tsinghua.edu.cn            &&\
+  pip3 install meson ninja                                                           &&\
+  apt-get -y autoremove

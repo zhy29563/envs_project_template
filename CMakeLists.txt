@@ -53,7 +53,7 @@ endif ()
 # 编译选项
 # ######################################################################################################################
 option ( ENABLE_FUNCTION_QT "Build Qt projects" OFF )
-option ( ENABLE_TEST_UNITTEST "Enable unittest based on googletest" OFF )
+option ( ENABLE_TEST_UNITTEST "Enable unittest based on googletest" ON )
 option ( ENABLE_TEST_COVERAGE "Enable coverage based on lcov and gcov" OFF )
 option ( ENABLE_TEST_HEAP_GPERFTOOLS "Enable memory analysis based on gpeerftools" OFF )
 option ( ENABLE_TEST_HEAP_VALGRIND "Enable memory analysis based on valgrind" OFF )

@@ -1,0 +1,29 @@
+########################################################################################################################
+# docker build -f ubuntu_base --build-arg UVER=20.04 --build-arg LOGIN_USER=u20 -t u20:base ${PWD}
+# docker build -f ubuntu_base --build-arg UVER=18.04 --build-arg LOGIN_USER=u18 -t u18:base ${PWD}
+# docker run -it --rm --privileged=true --name u20_base u20:base
+# docker run -it --rm --privileged=true --name u20_base --user=u20 --workdir=/home/u20 u20:base
+########################################################################################################################
+ARG   UVER=20.04
+FROM  ubuntu:${UVER}
+ARG   LOGIN_USER=u20
+
+LABEL Author=Steven.Zhou
+LABEL Email=zhy29563@126.com
+
+RUN apt-get -y update                                                                                  &&\
+  apt-get install -y ca-certificates                                                                   &&\
+  cp /etc/apt/sources.list /etc/apt/sources.list.bak                                                   &&\
+  sed -i "s@http://.*archive.ubuntu.com@https://mirrors.tuna.tsinghua.edu.cn@g" /etc/apt/sources.list  &&\
+  sed -i "s@http://.*security.ubuntu.com@https://mirrors.tuna.tsinghua.edu.cn@g" /etc/apt/sources.list &&\
+  apt-get -y update                                                                                    &&\
+  apt-get -y upgrade                                                                                   &&\
+  apt-get install -y net-tools iproute2 iputils-ping                                                   &&\
+  apt-get install -y wget axel curl                                                                    &&\
+  apt-get install -y zip unzip xz-utils rar unrar                                                      &&\
+  apt-get install -y gawk sudo vim tree locales lsb-release                                            &&\
+  echo 'root:root' | chpasswd root                                                                     &&\
+  apt-get -y autoremove                                                                                &&\
+  useradd -m -s /bin/bash ${LOGIN_USER}                                                                &&\
+  adduser ${LOGIN_USER} sudo                                                                           &&\
+  echo "${LOGIN_USER}:${LOGIN_USER}" | chpasswd

@@ -24,12 +24,6 @@ if ( ${Qt5_FOUND} )
   list ( APPEND CMAKE_AUTOUIC_SEARCH_PATHS "${CMAKE_CURRENT_SOURCE_DIR}/uis" )
 endif ()
 
-if ( ${LIB_OPENCV_FOUND} )
-  include_directories ( ${LIB_OPENCV_INCLUDE_DIRS} )
-  link_directories ( ${LIB_OPENCV_LIBRARY_DIRS} )
-  link_libraries ( ${LIB_OPENCV_LIBRARIES} )
-endif ()
-
 # ######################################################################################################################
 # 目标
 # ######################################################################################################################
